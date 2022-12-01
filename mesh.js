@@ -1,6 +1,3 @@
-
-
-
 /* 
 
 ●  Implement a class Mesh for meshes intended to be used when defining surfaces of 
@@ -15,39 +12,52 @@ index data describing the mesh, and create (via WebGL/OpenGL calls)
 
 ●  It also sets up vertex attribute pointers accordingly. 
 
-
 */
 
 
+class Mesh {
 
-export class Mesh {
-    constructor(vertexBufferObject, indexBufferObject, vertexArrayObject) {
-        this.vertexBufferObject = vertexBufferObject;
-        this.indexBufferObject = indexBufferObject;
-        this.vertexArrayObject = vertexArrayObject;
+    constructor(gl, vertices, indices, shaderProgram) {
+    
+        vertices = vertices;
+        indices = indices;
+    
+        /*vertex array object handle, this.vertexArray gets the value of a WebGLVertexArrayObject
+        representing a vertex array object (VAO) which points to vertex array data*/
+        vertexArrayObject = this.gl.createVertexArray();
+    
+        gl.bindVertexArray(this.vertexArrayObject);
 
-
+    
         /*vertex buffer handle*/
-        this.vertexBufferObject = this.gl.createBuffer();
+        vertexBufferObject = this.gl.createBuffer();
 
         /*bind the vertex buffer*/
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexBuffer);
+        gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexBufferObject);
+
     
         /*send the array of vertices to the GPU*/
         //this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.vertices), this.gl.STATIC_DRAW);
-        this.gl.bufferData(this.gl.ARRAY_BUFFER, flatten(this.vertices), this.gl.STATIC_DRAW);
+        gl.bufferData(this.gl.ARRAY_BUFFER, flatten(this.vertices), this.gl.STATIC_DRAW);
     
+
         /*index buffer handle*/
-        this.indexBuffer = this.gl.createBuffer();
+        indexBufferObject = this.gl.createBuffer();
+    
+        /*bind the index buffer, using ELEMENT_ARRAY_BUFFER to identify the array as an array of indices*/
+        gl.bindBuffer(this.gl.ELEMENT_ARRAY_BUFFER, this.indexBufferObject);
+    
+
+        /*send the array of indices to the GPU*/
+        gl.bufferData(this.gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(this.indices), this.gl.STATIC_DRAW);
+    
+
+        vPosition = this.gl.getAttribLocation(shaderProgram, "vPosition");
+        gl.vertexAttribPointer(this.vPosition, 4, this.gl.FLOAT, false, 0, 0);
+        gl.enableVertexAttribArray(this.vPosition);
     }
 
-
-
-
 }
-
-
-
 
 
 /* 
@@ -69,6 +79,7 @@ export class cuboid extends Mesh{
         this.depth = depth;
     }
 
+
     getCordinates(){
         let x = -this.width/2;
         let y = -this.height/2;
@@ -76,8 +87,6 @@ export class cuboid extends Mesh{
 
         return [x,y,z];
     }
-
-
 
     getWidth(){
         return this.width
@@ -92,9 +101,3 @@ export class cuboid extends Mesh{
     }
 
 }
-
-
-hej = new cuboid(10, 10, 10);
-saDU = hej.getCordinates();
-console.log(saDU);
-console.log("hej");
