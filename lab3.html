@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+    <title>Laboration 3</title>
+
+    <script id="vertex-shader" type="x-shader/x-vertex">
+    attribute vec4 vPosition;
+    uniform mat4 tMatrix;
+    uniform mat4 vMatrix;
+    uniform mat4 pMatrix;
+
+    void main()
+    {
+      gl_Position = pMatrix * vMatrix * tMatrix * vPosition;
+    }
+
+    </script>
+
+    <script id="fragment-shader" type="x-shader/x-fragment">
+    precision mediump float;
+    uniform vec4 fColor;
+
+    void main() {
+        gl_FragColor = fColor;
+    }
+    </script>
+
+    <script type="text/javascript" src="webgl-utils.js"></script>
+    <script type="text/javascript" src="MV.js"></script>
+    <script type="text/javascript" src="mesh.js"></script>
+    <script type="text/javascript" src="shader.js"></script>
+    <script type="text/javascript" src="shaderProgram.js"></script>
+    <script type="text/javascript" src="material.js"></script>
+    <script type="text/javascript" src="graphicsNode.js"></script>
+    <script type="text/javascript" src="monochromeMaterial.js"></script>
+    <script type="text/javascript" src="camera.js"></script>
+    <script type="text/javascript" src="lab3.js"></script>
+</head>
+<body>
+    <center><canvas id="gl-canvas" width="1700px" height="900px">
+        Oops ... your browser doesn't support the HTML5 canvas element
+    </canvas>  </center>
+    <br />
+</body>
+</html>
