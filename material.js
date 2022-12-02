@@ -10,16 +10,23 @@ class material {
 }
 
 class MonochromeMaterial extends material{
+    
     constructor(gl, prog, color){
         super(prog);
         this.color = color;
     }
+
     applyMaterial(){
         let mat = mat4.create();
-        mat4.identity(mat);
-
+        //Applies the color to the matrix
+        mat[3] = this.color[0];
+        mat[7] = this.color[1];
+        mat[11] = this.color[2];
+        
+        //Apply the matrix
+        
 
     }
 }
-let a = new MonochromeMaterial("gl", "prog", "color");
+let a = new MonochromeMaterial("gl", "prog", [1,1,1]);
 a.applyMaterial();
