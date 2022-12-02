@@ -2,7 +2,10 @@
 
     Är simpleMaterial samma sak som monochrome
 
+    Ska man bara skapa en cuboid och inte en mesh? Så i graphicsNode ska ha en cuboid som mesh och inte klassen mesh?
 */
+
+import { cuboid } from "./mesh";
 
 
 
@@ -14,6 +17,12 @@ var camera;
 var shader;
 
 var greenNodeTransform = mat4(1,0,0,0, 0,1,0,0, 0,0,1,5, 0,0,0,1);
+
+var height = 1;
+var width = 1;
+var depth = 1;
+
+/*
 
 var vertices = [
   vec4(-0.3, -0.3, 0.5, 1),
@@ -41,8 +50,7 @@ var indices = [
   0, 1, 5
 ];
 
-
-
+*/ 
 
 
 
@@ -74,7 +82,9 @@ function init() {
   camera = new Camera(gl, shader.getProgram());
   
 
-  var mesh = new Mesh(gl, vertices, indices, shader.getProgram());
+//  var mesh = new Mesh(gl, vertices, indices, shader.getProgram());
+  var mesh = new cuboid(width, height, depth, gl, shader.getProgram());
+
   var monoBlue = new MonochromeMaterial(gl, vec4(0,1, 1, 1.0), shader);
   var monoGreen = new MonochromeMaterial(gl, vec4(0.0, 1.0, 0, 1.0), shader);
 
@@ -84,6 +94,7 @@ function init() {
   var min = -10;
   var maxZ = 10;
   var minZ = -40
+
   for (var i = 0; i <= 60; i++) {
 
     var x = Math.floor(Math.random() * (max - min)) + min;
