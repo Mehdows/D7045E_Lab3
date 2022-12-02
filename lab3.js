@@ -66,10 +66,13 @@ function init() {
 
   var fragmentShader = new Shader(gl, gl.FRAGMENT_SHADER, "fragment-shader");
   var vertexShader = new Shader(gl, gl.VERTEX_SHADER, "vertex-shader");
+
+
   shader = new ShaderProgram(gl, vertexShader.getShader(), fragmentShader.getShader());
   //shader.activateShader();
 
   camera = new Camera(gl, shader.getProgram());
+  
 
   var mesh = new Mesh(gl, vertices, indices, shader.getProgram());
   var monoBlue = new MonochromeMaterial(gl, vec4(0,1, 1, 1.0), shader);
