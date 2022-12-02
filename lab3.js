@@ -14,11 +14,13 @@ import { ShaderProgram } from "./shaderProgram";
 import { Camera } from "./camera";
 import { GraphicsNode } from "./graphicsNode";
 
-var canvas;
+import { mat4 } from "./libraries/glMatrix/src/mat4.js";
+
 var gl;
+var shaderProgram;
 
 
-let vertexShader =
+var vertexShader =
 "attribute vec4 a_Position;\n" +
 "uniform mat4 u_TransformMatrix;\n" +
 "uniform mat4 u_ViewMatrix;\n" +
@@ -30,7 +32,7 @@ let vertexShader =
 "}\n";
 
 
-let  fragmentShader = 
+var  fragmentShader = 
 "precision mediump float;\n" +
 "uniform vec4 u_Color;\n" +
 "\n" +
@@ -40,6 +42,40 @@ let  fragmentShader =
 
 
 function init() {
+  // Making the canvas
+  let canvas = document.getElementById("gl-canvas");
+  gl = canvas.getContext("webgl2");
+  gl.viewport(0, 0, canvas.width, canvas.height);
+  gl.clearColor(0.8, 0.8, 0.8, 1.0);
+  gl.enable(gl.DEPTH_TEST);
+
+
+  // Making the shaders
+  let vertexShader = new Shader(gl, gl.VERTEX_SHADER, vertexShader);
+  let fragmentShader = new Shader(gl, gl.FRAGMENT_SHADER, fragmentShader);
+
+  shaderProgram = new ShaderProgram(gl, vertexShader, fragmentShader);
+
+  // Making the camera
+  let camera = new Camera(gl, shaderProgram);
+
+  // Making the mesh
+  let width = 1;
+  let height = 1;
+  let depth = 1;
+  let cube = new cuboid(width, height, depth, gl, shaderProgram);
+
+  let randomBoxesColor = [0, 1, 0]; // Green
+  let playableBoxColor = [1, 0, 0]; // Red
+  let randomBoxesMaterial = new MonochromeMaterial(gl, shaderProgram, randomBoxesColor);
+  let playableBoxMaterial = new MonochromeMaterial(gl, shaderProgram, playableBoxColor);
+  
+  let mat = mat4.create();
+  playableBox = new GraphicsNode(gl, cube, playableBoxMaterial, mat);
+
+  let max = 1;
+  let min = -1;
+  
 
 }
 
