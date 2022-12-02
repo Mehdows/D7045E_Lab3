@@ -18,10 +18,10 @@ export class MonochromeMaterial extends material{
 
     applyMaterial(transformMatrix){
         this.color.push(1);
-        let colorLoc = this.gl.getUniformLocation(this.prog, "uColor");
+        let colorLoc = this.gl.getUniformLocation(this.prog, "u_Color");
         this.gl.uniform4fv(colorLoc, this.color);
 
-        let transformLoc = this.gl.getUniformLocation(this.prog, "uTransform");
+        let transformLoc = this.gl.getUniformLocation(this.prog, "u_TransformMatrix");
         this.gl.uniformMatrix4fv(transformLoc, false, transformMatrix);
     }
 }

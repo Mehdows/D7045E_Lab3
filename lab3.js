@@ -19,14 +19,14 @@ var gl;
 
 
 let vertexShader =
-"attribute vec4 vPosition;\n" +
-"uniform mat4 tMatrix;\n" +
-"uniform mat4 vMatrix;\n" +
-"uniform mat4 pMatrix;\n" +
+"attribute vec4 a_Position;\n" +
+"uniform mat4 u_TransformMatrix;\n" +
+"uniform mat4 u_ViewMatrix;\n" +
+"uniform mat4 u_ProjectionMatrix;\n" +
 "\n" +
 "void main()\n" +
 "{\n" +
-"  gl_Position = u_Matrix * vMatrix * tMatrix * vPosition;\n" +
+"  gl_Position = u_ProjectionMatrix * u_ViewMatrix * u_TransformMatrix * a_Position;\n" +
 "}\n";
 
 
@@ -40,7 +40,6 @@ let  fragmentShader =
 
 
 function init() {
-
 
 }
 

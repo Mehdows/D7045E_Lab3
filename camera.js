@@ -15,8 +15,8 @@ class Camera {
     }
 
     activate(){
-        let projMatrix = this.gl.getUniformLocation(this.shaderProgram, "projectionMatrix");
-        let viewMatrix = this.gl.getUniformLocation(this.shaderProgram, "viewMatrix");
+        let projMatrix = this.gl.getUniformLocation(this.shaderProgram, "u_ProjectionMatrix");
+        let viewMatrix = this.gl.getUniformLocation(this.shaderProgram, "u_ViewMatrix");
         this.gl.uniformMatrix4fv(projMatrix, false, this.projectionMatrix);
         this.gl.uniformMatrix4fv(viewMatrix, false, this.viewMatrix);
     }
