@@ -1,6 +1,5 @@
-import * as vec4 from "./libraries/glMatrix/src/mat4.js";
 
-class material {
+export class material {
     constructor(gl, prog){
         this.gl = gl;
         this.prog = prog;
@@ -10,7 +9,7 @@ class material {
     }
 }
 
-class MonochromeMaterial extends material{
+export class MonochromeMaterial extends material{
     
     constructor(gl, prog, color){
         super(gl, prog);
