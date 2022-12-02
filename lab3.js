@@ -25,6 +25,26 @@ var height = 1;
 var width = 1;
 var depth = 1;
 
+let vertexShader =
+"attribute vec4 vPosition;\n" +
+"uniform mat4 tMatrix;\n" +
+"uniform mat4 vMatrix;\n" +
+"uniform mat4 pMatrix;\n" +
+"\n" +
+"void main()\n" +
+"{\n" +
+"  gl_Position = u_Matrix * vMatrix * tMatrix * vPosition;\n" +
+"}\n";
+
+
+let  fragmentShader = 
+"precision mediump float;\n" +
+"uniform vec4 u_Color;\n" +
+"\n" +
+"void main() {\n" +
+    "gl_FragColor = u_Color;\n" +
+"};\n";
+
 
 function init() {
 
