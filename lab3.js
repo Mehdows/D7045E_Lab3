@@ -5,9 +5,12 @@
     Ska man bara skapa en cuboid och inte en mesh? Så i graphicsNode ska ha en cuboid som mesh och inte klassen mesh?
 */
 
-import { cuboid } from "./mesh";
-
-
+import { cuboid } from "./mesh.js";
+import { MonochromeMaterial } from "./material.js";
+import { Shader } from "./shader";
+import { ShaderProgram } from "./shaderProgram";
+import { Camera } from "./camera";
+import { GraphicsNode } from "./graphicsNode";
 
 var canvas;
 var gl;
@@ -21,42 +24,6 @@ var greenNodeTransform = mat4(1,0,0,0, 0,1,0,0, 0,0,1,5, 0,0,0,1);
 var height = 1;
 var width = 1;
 var depth = 1;
-
-/*
-
-var vertices = [
-  vec4(-0.3, -0.3, 0.5, 1),
-  vec4(-0.3, 0.3, 0.5, 1),
-  vec4(0.3, 0.3, 0.5, 1),
-  vec4(0.3, -0.3, 0.5, 1),
-  vec4(-0.3, -0.3, -0.5, 1),
-  vec4(-0.3, 0.3, -0.5, 1),
-  vec4(0.3, 0.3, -0.5, 1),
-  vec4(0.3, -0.3, -0.5, 1)
-];
-
-var indices = [
-  1, 0, 3,
-  3, 2, 1,
-  2, 3, 7,
-  7, 6, 2,
-  3, 0, 4,
-  4, 7, 3,
-  6, 5, 1,
-  1, 2, 6,
-  4, 5, 6,
-  6, 7, 4,
-  5, 4, 0,
-  0, 1, 5
-];
-
-*/ 
-
-
-
-
-
-
 
 
 function init() {
@@ -72,23 +39,25 @@ function init() {
 
   gl.enable(gl.DEPTH_TEST);
 
+
   var fragmentShader = new Shader(gl, gl.FRAGMENT_SHADER, "fragment-shader");
   var vertexShader = new Shader(gl, gl.VERTEX_SHADER, "vertex-shader");
-
 
   shader = new ShaderProgram(gl, vertexShader.getShader(), fragmentShader.getShader());
   //shader.activateShader();
 
   camera = new Camera(gl, shader.getProgram());
   
-
-//  var mesh = new Mesh(gl, vertices, indices, shader.getProgram());
   var mesh = new cuboid(width, height, depth, gl, shader.getProgram());
 
   var monoBlue = new MonochromeMaterial(gl, vec4(0,1, 1, 1.0), shader);
   var monoGreen = new MonochromeMaterial(gl, vec4(0.0, 1.0, 0, 1.0), shader);
 
   greenNode = new GraphicsNode(gl, mesh, monoGreen, greenNodeTransform);
+
+
+
+
 
   var max = 10;
   var min = -10;
