@@ -1,21 +1,17 @@
-
-
-import {helloWorld} from "./mesh.js";
-
-
 class GraphicsNode {
-    constructor(gl, mesh, material) {
+    constructor(gl, mesh, material, transform) {
         this.gl = gl;
         this.mesh = mesh;
-        this.material = mesh;
+        this.material = material;
+        this.transform = transform;
     }
 
-    Draw() {
-        
+    draw() {
+        this.material.applyMaterial(this.transform);
+        this.gl.drawElements(this.gl.TRIANGLES, this.mesh.getIndices().length, this.gl.UNSIGNED_SHORT, 0);
     }
 
-    transform(transform) {
-        
+    update(transform) {
+        this.transform = transform;
     }
 }
-console.log(helloWorld());

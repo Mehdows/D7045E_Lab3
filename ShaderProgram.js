@@ -11,4 +11,8 @@ export class ShaderProgram{
     activate(){
         this.gl.useProgram(this.program);
     }
+    
+    getProgram(){
+        return this.program;
+    }
 }

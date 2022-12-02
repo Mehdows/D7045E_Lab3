@@ -1,7 +1,8 @@
-import * as mat4 from "./libraries/glMatrix/src/mat4.js";
+import * as vec4 from "./libraries/glMatrix/src/mat4.js";
 
 class material {
     constructor(gl, prog){
+        this.gl = gl;
         this.prog = prog;
     }
     applyMaterial(){
@@ -12,21 +13,16 @@ class material {
 class MonochromeMaterial extends material{
     
     constructor(gl, prog, color){
-        super(prog);
+        super(gl, prog);
         this.color = color;
     }
 
-    applyMaterial(){
-        let mat = mat4.create();
-        //Applies the color to the matrix
-        mat[3] = this.color[0];
-        mat[7] = this.color[1];
-        mat[11] = this.color[2];
-        
-        //Apply the matrix
-        
+    applyMaterial(transformMatrix){
+        this.color.push(1);
+        let colorLoc = this.gl.getUniformLocation(this.prog, "uColor");
+        this.gl.uniform4fv(colorLoc, this.color);
 
+        let transformLoc = this.gl.getUniformLocation(this.prog, "uTransform");
+        this.gl.uniformMatrix4fv(transformLoc, false, transformMatrix);
     }
 }
-let a = new MonochromeMaterial("gl", "prog", [1,1,1]);
-a.applyMaterial();
