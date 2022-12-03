@@ -1,27 +1,30 @@
-
-export class material {
-    constructor(gl, prog){
+class material {
+    constructor(gl, shaderProgram){
         this.gl = gl;
-        this.prog = prog;
+        this.shaderProgram = shaderProgram;
+
+
     }
     applyMaterial(){
         throw new Error("abstract method, must be implemented");
     }
 }
 
-export class MonochromeMaterial extends material{
+class MonochromeMaterial extends material{
     
-    constructor(gl, prog, color){
-        super(gl, prog);
+    constructor(gl, shaderProgram, color){
+        super(gl, shaderProgram);
         this.color = color;
     }
 
     applyMaterial(transformMatrix){
+        let prog = this.shaderProgram.getProgram();
         this.color.push(1);
-        let colorLoc = this.gl.getUniformLocation(this.prog, "u_Color");
-        this.gl.uniform4fv(colorLoc, this.color);
 
-        let transformLoc = this.gl.getUniformLocation(this.prog, "u_TransformMatrix");
+        let colorLoc = this.gl.getUniformLocation(prog, "u_Color");
+        let transformLoc = this.gl.getUniformLocation(prog, "u_TransformMatrix");
+
+        this.gl.uniform4fv(colorLoc, this.color);
         this.gl.uniformMatrix4fv(transformLoc, false, transformMatrix);
     }
 }

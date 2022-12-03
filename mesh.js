@@ -18,41 +18,25 @@ index data describing the mesh, and create (via WebGL/OpenGL calls)
 class Mesh {
 
     constructor(vertices, indices, gl, shaderProgram) {
+        
+        
+        let vertexArr = gl.createVertexArray();
+        let vertexBuff = gl.createBuffer();
+        let indexBuff = gl.createBuffer();
 
-        /*vertex array object handle, this.vertexArray gets the value of a WebGLVertexArrayObject
-        representing a vertex array object (VAO) which points to vertex array data*/
-        vertexArrayObject = gl.createVertexArray();
-    
-        gl.bindVertexArray(this.vertexArrayObject);
+        gl.bindVertexArray(vertexArr);
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuff);
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuff);
 
-    
-        /*vertex buffer handle*/
-        vertexBufferObject = gl.createBuffer();
-
-        /*bind the vertex buffer*/
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBufferObject);
-
-    
-        /*send the array of vertices to the GPU*/
-        //this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.vertices), this.gl.STATIC_DRAW);
-        gl.bufferData(gl.ARRAY_BUFFER, flatten(vertices), gl.STATIC_DRAW);
-    
-
-        /*index buffer handle*/
-        indexBufferObject = gl.createBuffer();
-    
-        /*bind the index buffer, using ELEMENT_ARRAY_BUFFER to identify the array as an array of indices*/
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBufferObject);
-    
-
-        /*send the array of indices to the GPU*/
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(indices), this.gl.STATIC_DRAW);
-    
-
-        vPosition = gl.getAttribLocation(shaderProgram, "vPosition");
-        gl.vertexAttribPointer(this.vPosition, 4, this.gl.FLOAT, false, 0, 0);
-        gl.enableVertexAttribArray(this.vPosition);
+        gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
+        
+        let prog = shaderProgram.getProgram();
+        let pos = gl.getAttribLocation(prog, "a_Position");
+        gl.vertexAttribPointer(pos, 4, gl.FLOAT, false, 0, 0);
+        gl.enableVertexAttribArray(pos);
     }
+    
 
 }
 
@@ -68,37 +52,19 @@ cuboid should be at the origin in the local coordinate system.
 */
 
 
-export class cuboid extends Mesh{
+class cuboid extends Mesh{
     constructor(width, height, depth, gl, shaderProgram){
-        
-        this.width = width;
-        this.height = height;
-        this.depth = depth;
-        this.gl = gl;
-        this.shaderProgram = shaderProgram;
-        
-        super(this.getVertices(), this.getIndices(), this.gl, this.shaderProgram);
-    }
-
-    // Vertices
-    getVertices(){
-        var vertices = [
-            vec4( -this.width, -this.height, this.depth, 1),
-            vec4( -this.width, this.height, this.depth, 1),
-            vec4( this.width, this.height, this.depth, 1),
-            vec4( this.width, -this.height, this.depth, 1),
-            vec4( -this.width, -this.height, -this.depth, 1),
-            vec4( -this.width, this.height, -this.depth, 1),
-            vec4( this.width, this.height, -this.depth, 1),
-            vec4( this.width, -this.height, -this.depth, 1)
+        let vertices = [
+            vec4( -width, -height, depth, 1),
+            vec4( -width, height, depth, 1),
+            vec4( width, height, depth, 1),
+            vec4( width, -height, depth, 1),
+            vec4( -width, -height, -depth, 1),
+            vec4( -width, height, -depth, 1),
+            vec4( width, height, -depth, 1),
+            vec4( width, -height, -depth, 1)
         ];
-
-        return vertices;
-    }
-
-    // Indices
-    getIndices(){
-        var indices = [
+        let indices = [
             1, 0, 3,
             3, 2, 1,
             2, 3, 7,
@@ -112,10 +78,15 @@ export class cuboid extends Mesh{
             5, 4, 0,
             0, 1, 5
         ];
+        
+        super(vertices, indices, gl, shaderProgram);
 
-        return indices;
+        this.width = width;
+        this.height = height;
+        this.depth = depth;
+        this.gl = gl;
+        this.shaderProgram = shaderProgram;
     }
-
     // Getters
     getCordinates(){
         let x = -this.width/2;

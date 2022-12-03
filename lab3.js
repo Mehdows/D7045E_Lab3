@@ -1,26 +1,10 @@
-/* Frågor till Håkan:
-
-    Är simpleMaterial samma sak som monochrome
-
-    Ska man bara skapa en cuboid och inte en mesh? Så i graphicsNode ska ha en cuboid som mesh och inte klassen mesh?
-*/
-
-
-// Imports
-import { cuboid } from "./mesh.js";
-import { MonochromeMaterial } from "./material.js";
-import { Shader } from "./shader";
-import { ShaderProgram } from "./shaderProgram";
-import { Camera } from "./camera";
-import { GraphicsNode } from "./graphicsNode";
-
-import { mat4 } from "./libraries/glMatrix/src/mat4.js";
-
 var gl;
 var shaderProgram;
+var boxes = [];
+var camera;
 
 
-var vertexShader =
+var vertexShaderSource =
 "attribute vec4 a_Position;\n" +
 "uniform mat4 u_TransformMatrix;\n" +
 "uniform mat4 u_ViewMatrix;\n" +
@@ -32,13 +16,13 @@ var vertexShader =
 "}\n";
 
 
-var  fragmentShader = 
+var  fragmentShaderSource = 
 "precision mediump float;\n" +
 "uniform vec4 u_Color;\n" +
 "\n" +
 "void main() {\n" +
     "gl_FragColor = u_Color;\n" +
-"};\n";
+"}\n";
 
 
 function init() {
@@ -49,15 +33,13 @@ function init() {
   gl.clearColor(0.8, 0.8, 0.8, 1.0);
   gl.enable(gl.DEPTH_TEST);
 
-
   // Making the shaders
-  let vertexShader = new Shader(gl, gl.VERTEX_SHADER, vertexShader);
-  let fragmentShader = new Shader(gl, gl.FRAGMENT_SHADER, fragmentShader);
-
+  let vertexShader = new Shader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+  let fragmentShader = new Shader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
   shaderProgram = new ShaderProgram(gl, vertexShader, fragmentShader);
 
   // Making the camera
-  let camera = new Camera(gl, shaderProgram);
+  camera = new Camera(gl, shaderProgram, canvas);
 
   // Making the mesh
   let width = 1;
@@ -70,20 +52,37 @@ function init() {
   let randomBoxesMaterial = new MonochromeMaterial(gl, shaderProgram, randomBoxesColor);
   let playableBoxMaterial = new MonochromeMaterial(gl, shaderProgram, playableBoxColor);
   
-  let mat = mat4.create();
+  let mat = mat4();
   playableBox = new GraphicsNode(gl, cube, playableBoxMaterial, mat);
 
-  let max = 1;
-  let min = -1;
+  let maxdepth = 0.1;
+  let mindepth = -10;
+  for (let i = 0; i < 10; i++) {
+    let x = Math.random();
+    let y = Math.random();
+    let z = Math.random()*10;
+    let mat = move([x, y, z]);
+    let randomBox = new GraphicsNode(gl, cube, randomBoxesMaterial, mat);
+    boxes.push(randomBox);
+  }
   
-
+  render();
 }
 
 
 function render() {
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  shaderProgram.activate();
+  camera.activate();
 
+  for (let box of boxes) {
+    box.draw();
+  }
+  playableBox.draw();
 }
 
 window.addEventListener('keydown', function(event) {
 
 });
+
+window.onload = init;

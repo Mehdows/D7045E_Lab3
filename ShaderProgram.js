@@ -1,11 +1,15 @@
-export class ShaderProgram{
+class ShaderProgram{
     
     constructor(gl, fragmentShader, vertexShader){
         this.gl = gl;
-        this.program = this.gl.createProgram();
-        this.gl.attachShader(this.program, fragmentShader);
-        this.gl.attachShader(this.program, vertexShader);
-        this.gl.linkProgram(this.program);
+        this.program = gl.createProgram();
+        gl.attachShader(this.program, fragmentShader.getShader());
+        gl.attachShader(this.program, vertexShader.getShader());
+        gl.linkProgram(this.program);
+        if (!gl.getProgramParameter(this.program, gl.LINK_STATUS)) {
+            const info = gl.getProgramInfoLog(this.program);
+            throw new Error(`Could not compile WebGL program. \n\n${info}`);
+        }
     }
 
     activate(){

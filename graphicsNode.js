@@ -9,7 +9,7 @@ class GraphicsNode {
     // Draw the node
     draw() {
         this.material.applyMaterial(this.transform);
-        this.gl.drawElements(this.gl.TRIANGLES, this.mesh.getIndices().length, this.gl.UNSIGNED_SHORT, 0);
+        this.gl.drawElements(this.gl.TRIANGLES, this.mesh.length, this.gl.UNSIGNED_SHORT, 0);
     }
 
     // Update the green node position

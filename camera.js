@@ -1,5 +1,5 @@
 class Camera {
-    constructor(gl, shaderProgram) {
+    constructor(gl, shaderProgram, canvas) {
         this.gl = gl;
         this.shaderProgram = shaderProgram;
 
@@ -15,10 +15,15 @@ class Camera {
     }
 
     activate(){
-        let projMatrix = this.gl.getUniformLocation(this.shaderProgram, "u_ProjectionMatrix");
-        let viewMatrix = this.gl.getUniformLocation(this.shaderProgram, "u_ViewMatrix");
+        let prog = this.shaderProgram.getProgram();
+        let projMatrix = this.gl.getUniformLocation(prog, "u_ProjectionMatrix");
+        let viewMatrix = this.gl.getUniformLocation(prog, "u_ViewMatrix");
         this.gl.uniformMatrix4fv(projMatrix, false, this.projectionMatrix);
         this.gl.uniformMatrix4fv(viewMatrix, false, this.viewMatrix);
+    }
+
+    getShaderProgram(){
+        return this.shaderProgram;
     }
 
 }

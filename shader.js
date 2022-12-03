@@ -1,8 +1,8 @@
-export class Shader{
+class Shader{
     constructor(gl, shaderType, source){
-        this.shader = this.gl.createShader(this.shaderType);
-        this.gl.shaderSource(this.shader, this.source);
-        this.gl.compileShader(this.shader);
+        this.shader = gl.createShader(shaderType);
+        gl.shaderSource(this.shader, source);
+        gl.compileShader(this.shader);
     }
     getShader(){
         return this.shader;
