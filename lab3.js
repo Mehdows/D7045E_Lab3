@@ -2,7 +2,7 @@ var gl;
 var shaderProgram;
 var boxes = [];
 var camera;
-
+let playableBoxMatrix = mat4(vec4(1,0,0,0), vec4(0,1,0,0), vec4(0,0,1,-3), vec4(0,0,0,1));
 
 var vertexShaderSource =
 "attribute vec4 a_Position;\n" +
@@ -42,23 +42,21 @@ function init() {
   camera = new Camera(gl, shaderProgram, canvas);
 
   // Making the mesh
-  let width = 0.5;
-  let height = 0.5;
-  let depth = 0.5;
+  let width = 0.1;
+  let height = 0.1;
+  let depth = 0.1;
   let cube = new cuboid(width, height, depth, gl, shaderProgram);
 
   let randomBoxesColor = [0, 1, 0]; // Green
   let playableBoxColor = [1, 0, 0]; // Red
   let randomBoxesMaterial = new MonochromeMaterial(gl, shaderProgram, randomBoxesColor);
   let playableBoxMaterial = new MonochromeMaterial(gl, shaderProgram, playableBoxColor);
-  
-  let mat = mat4(vec4(1, 0, 0, 0), vec4(0, 1, 0, 0), vec4(0, 0, 1, 0), vec4(0, 0, 0, 1));
-  playableBox = new GraphicsNode(gl, cube, playableBoxMaterial, mat);
+  playableBox = new GraphicsNode(gl, cube, playableBoxMaterial, playableBoxMatrix);
 
   for (let i = 0; i < 10; i++) {
-    let x = Math.random();
-    let y = Math.random()*5;
-    let z = Math.random()*50;
+    let x = Math.random() - 0.5;
+    let y = Math.random() - 0.5;
+    let z = -Math.random()*5;
     let mat = move([x, y, z]);
     let randomBox = new GraphicsNode(gl, cube, randomBoxesMaterial, mat);
     boxes.push(randomBox);
@@ -79,8 +77,24 @@ function render() {
   playableBox.draw();
 }
 
-window.addEventListener('keydown', function(event) {
 
+window.addEventListener('keydown', function(event) {
+    
+    if (event.key == 'w') {
+        playableBoxMatrix[1][3] += 0.1;  
+    } if (event.key == 's') {
+        playableBoxMatrix[1][3] -= 0.1;  
+    } if (event.key == 'a') {
+        playableBoxMatrix[0][3] -= 0.1;  
+    } if (event.key == 'd') {
+        playableBoxMatrix[0][3] += 0.1;  
+    } if (event.key == 'e') {
+        playableBoxMatrix[2][3] += 0.1;  
+    } if (event.key == 'c') {
+        playableBoxMatrix[2][3] -= 0.1;  
+    }
+    playableBox.update(playableBoxMatrix);
+    render();
 });
 
 window.onload = init;

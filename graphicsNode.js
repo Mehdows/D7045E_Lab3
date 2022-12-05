@@ -3,17 +3,19 @@ class GraphicsNode {
         this.gl = gl;
         this.mesh = mesh;
         this.material = material;
-        this.transform = transform;
+        this.transform = flatten(transform);
     }
 
     // Draw the node
     draw() {
         this.material.applyMaterial(this.transform);
-        this.gl.drawElements(this.gl.TRIANGLES, this.mesh.length, this.gl.UNSIGNED_SHORT, 0);
+        let indicesLength = this.mesh.getIndices().length;
+        this.gl.drawElements(this.gl.TRIANGLES, indicesLength, this.gl.UNSIGNED_BYTE, 0);
     }
 
     // Update the green node position
     update(transform) {
+        transform = flatten(transform);
         this.transform = transform;
     }
 }

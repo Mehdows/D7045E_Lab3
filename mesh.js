@@ -19,7 +19,9 @@ class Mesh {
 
     constructor(vertices, indices, gl, shaderProgram) {
         
-        
+        this.vertices = vertices;
+        this.indices = indices;
+
         let vertexArr = gl.createVertexArray();
         let vertexBuff = gl.createBuffer();
         let indexBuff = gl.createBuffer();
@@ -28,11 +30,15 @@ class Mesh {
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuff);
         gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuff);
 
-        gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.STATIC_DRAW);
+        let verticeArray = new Float32Array(this.vertices);
+        let indiceArray = new Uint8Array(this.indices);
+
+        gl.bufferData(gl.ARRAY_BUFFER, verticeArray, gl.STATIC_DRAW);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indiceArray, gl.STATIC_DRAW);
         
         let prog = shaderProgram.getProgram();
         let pos = gl.getAttribLocation(prog, "a_Position");
+
         gl.vertexAttribPointer(pos, 4, gl.FLOAT, false, 0, 0);
         gl.enableVertexAttribArray(pos);
     }
@@ -40,7 +46,7 @@ class Mesh {
     getIndices(){
         return this.indices;
     }
-    
+
     getVertices(){
         return this.vertices;
     }
@@ -63,14 +69,14 @@ cuboid should be at the origin in the local coordinate system.
 class cuboid extends Mesh{
     constructor(width, height, depth, gl, shaderProgram){
         let vertices = [
-            vec4( -width, -height, depth, 1),
-            vec4( -width, height, depth, 1),
-            vec4( width, height, depth, 1),
-            vec4( width, -height, depth, 1),
-            vec4( -width, -height, -depth, 1),
-            vec4( -width, height, -depth, 1),
-            vec4( width, height, -depth, 1),
-            vec4( width, -height, -depth, 1)
+            -width, -height, depth, 1,
+            -width, height, depth, 1,
+            width, height, depth, 1,
+            width, -height, depth, 1,
+            -width, -height, -depth, 1,
+            -width, height, -depth, 1,
+            width, height, -depth, 1,
+            width, -height, -depth, 1
         ];
         let indices = [
             1, 0, 3,

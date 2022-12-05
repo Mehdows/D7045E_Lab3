@@ -197,3 +197,13 @@ function flatten( v )
 
     return floats;
 }
+
+function multMatrix(mat1, mat2){
+    let result = new Float32Array(16);
+    for(let i = 0; i < 16; i++){
+        for(let j = 0; j < 4; j++){
+            result[i] += mat1[Math.floor(i/4)*4+j] * mat2[j*4+i%4];
+        }
+    }
+    return result;
+}
