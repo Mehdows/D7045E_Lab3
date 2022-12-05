@@ -42,9 +42,9 @@ function init() {
   camera = new Camera(gl, shaderProgram, canvas);
 
   // Making the mesh
-  let width = 1;
-  let height = 1;
-  let depth = 1;
+  let width = 0.5;
+  let height = 0.5;
+  let depth = 0.5;
   let cube = new cuboid(width, height, depth, gl, shaderProgram);
 
   let randomBoxesColor = [0, 1, 0]; // Green
@@ -52,15 +52,13 @@ function init() {
   let randomBoxesMaterial = new MonochromeMaterial(gl, shaderProgram, randomBoxesColor);
   let playableBoxMaterial = new MonochromeMaterial(gl, shaderProgram, playableBoxColor);
   
-  let mat = mat4();
+  let mat = mat4(vec4(1, 0, 0, 0), vec4(0, 1, 0, 0), vec4(0, 0, 1, 0), vec4(0, 0, 0, 1));
   playableBox = new GraphicsNode(gl, cube, playableBoxMaterial, mat);
 
-  let maxdepth = 0.1;
-  let mindepth = -10;
   for (let i = 0; i < 10; i++) {
     let x = Math.random();
-    let y = Math.random();
-    let z = Math.random()*10;
+    let y = Math.random()*5;
+    let z = Math.random()*50;
     let mat = move([x, y, z]);
     let randomBox = new GraphicsNode(gl, cube, randomBoxesMaterial, mat);
     boxes.push(randomBox);

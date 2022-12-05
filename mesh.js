@@ -36,6 +36,14 @@ class Mesh {
         gl.vertexAttribPointer(pos, 4, gl.FLOAT, false, 0, 0);
         gl.enableVertexAttribArray(pos);
     }
+
+    getIndices(){
+        return this.indices;
+    }
+    
+    getVertices(){
+        return this.vertices;
+    }
     
 
 }

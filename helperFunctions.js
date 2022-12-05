@@ -2,6 +2,7 @@ function _argumentsToArray( args )
 {
     return [].concat.apply( [], Array.prototype.slice.apply(args) );
 }
+
 function vec3()
 {
     var result = _argumentsToArray( arguments );
@@ -105,9 +106,9 @@ function mat4()
 function move(moveArr){
     let move = vec3(moveArr[0], moveArr[1], moveArr[2]);
     let moveMatrix = mat4();
-    moveMatrix[0][4] = move[0];
-    moveMatrix[1][4] = move[1];
-    moveMatrix[2][4] = move[2];
+    moveMatrix[0][3] = move[0];
+    moveMatrix[1][3] = move[1];
+    moveMatrix[2][3] = move[2];
     return moveMatrix;
 }
 
@@ -143,4 +144,56 @@ function perspective( fovy, aspect, near, far )
 
 function radians( degrees ) {
     return degrees * Math.PI / 180.0;
+}
+
+function transpose( m )
+{
+    if ( !m.matrix ) {
+        return "transpose(): trying to transpose a non-matrix";
+    }
+
+    var result = [];
+    for ( var i = 0; i < m.length; ++i ) {
+        result.push( [] );
+        for ( var j = 0; j < m[i].length; ++j ) {
+            result[i].push( m[j][i] );
+        }
+    }
+
+    result.matrix = true;
+
+    return result;
+}
+
+function flatten( v )
+{
+    if ( v.matrix === true ) {
+        v = transpose( v );
+    }
+
+    var n = v.length;
+    var elemsAreArrays = false;
+
+    if ( Array.isArray(v[0]) ) {
+        elemsAreArrays = true;
+        n *= v[0].length;
+    }
+
+    var floats = new Float32Array( n );
+
+    if ( elemsAreArrays ) {
+        var idx = 0;
+        for ( var i = 0; i < v.length; ++i ) {
+            for ( var j = 0; j < v[i].length; ++j ) {
+                floats[idx++] = v[i][j];
+            }
+        }
+    }
+    else {
+        for ( var i = 0; i < v.length; ++i ) {
+            floats[i] = v[i];
+        }
+    }
+
+    return floats;
 }

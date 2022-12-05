@@ -19,12 +19,17 @@ class MonochromeMaterial extends material{
 
     applyMaterial(transformMatrix){
         let prog = this.shaderProgram.getProgram();
-        this.color.push(1);
+        if (this.color.length == 3){
+            this.color.push(1);
+        }
+        
+        let colorLocation = this.gl.getUniformLocation(prog, "u_Color");
+        let transformLocation = this.gl.getUniformLocation(prog, "u_TransformMatrix");
 
-        let colorLoc = this.gl.getUniformLocation(prog, "u_Color");
-        let transformLoc = this.gl.getUniformLocation(prog, "u_TransformMatrix");
-
-        this.gl.uniform4fv(colorLoc, this.color);
-        this.gl.uniformMatrix4fv(transformLoc, false, transformMatrix);
+        let flattenedtransformMatrix = flatten(transformMatrix);
+        let flattenedColor = flatten(this.color);
+        
+        this.gl.uniform4fv(colorLocation, flattenedColor);
+        this.gl.uniformMatrix4fv(transformLocation, false, flattenedtransformMatrix);
     }
 }
