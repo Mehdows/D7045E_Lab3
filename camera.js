@@ -10,7 +10,7 @@ class Camera {
         let aspect = canvas.width / canvas.height;
 
         this.viewMatrix = lookAt(eye, at, up);
-        this.projectionMatrix = perspective(45, aspect, 0.1, 100);
+        this.projectionMatrix = perspective(45, aspect, 1, 100);
 
     }
 

@@ -47,8 +47,8 @@ function init() {
   let depth = 0.1;
   let cube = new cuboid(width, height, depth, gl, shaderProgram);
 
-  let randomBoxesColor = [0, 1, 0]; // Green
-  let playableBoxColor = [1, 0, 0]; // Red
+  let randomBoxesColor = [0, 1, 0, 1]; // Green
+  let playableBoxColor = [1, 0, 0, 1]; // Red
   let randomBoxesMaterial = new MonochromeMaterial(gl, shaderProgram, randomBoxesColor);
   let playableBoxMaterial = new MonochromeMaterial(gl, shaderProgram, playableBoxColor);
   playableBox = new GraphicsNode(gl, cube, playableBoxMaterial, playableBoxMatrix);
