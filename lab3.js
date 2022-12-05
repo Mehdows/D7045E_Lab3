@@ -77,9 +77,12 @@ function render() {
   playableBox.draw();
 }
 
+function lightning(GraphicsNode, color) {
+
+}
+
 
 window.addEventListener('keydown', function(event) {
-    
     if (event.key == 'w') {
         playableBoxMatrix[1][3] += 0.1;  
     } if (event.key == 's') {
@@ -93,6 +96,7 @@ window.addEventListener('keydown', function(event) {
     } if (event.key == 'c') {
         playableBoxMatrix[2][3] -= 0.1;  
     }
+    
     playableBox.update(playableBoxMatrix);
     render();
 });
