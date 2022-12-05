@@ -9,19 +9,20 @@ var vertexShaderSource =
 "uniform mat4 u_TransformMatrix;\n" +
 "uniform mat4 u_ViewMatrix;\n" +
 "uniform mat4 u_ProjectionMatrix;\n" +
-"\n" +
+"varying float v_Depth;\n" +
 "void main()\n" +
 "{\n" +
 "  gl_Position = u_ProjectionMatrix * u_ViewMatrix * u_TransformMatrix * a_Position;\n" +
+"  v_Depth = sqrt( pow( gl_Position.x , 2.0) + pow( gl_Position.y , 2.0) + pow(gl_Position.z , 2.0));\n" +
 "}\n";
 
 
 var  fragmentShaderSource = 
 "precision mediump float;\n" +
 "uniform vec4 u_Color;\n" +
-"\n" +
+"varying float v_Depth;\n" +
 "void main() {\n" +
-    "gl_FragColor = u_Color;\n" +
+    "gl_FragColor = vec4(u_Color[0]*1.5/v_Depth, u_Color[1]*1.5/v_Depth, u_Color[2]*1.5/v_Depth, 1);\n" +
 "}\n";
 
 
@@ -30,7 +31,7 @@ function init() {
   let canvas = document.getElementById("gl-canvas");
   gl = canvas.getContext("webgl2");
   gl.viewport(0, 0, canvas.width, canvas.height);
-  gl.clearColor(0.8, 0.8, 0.8, 1.0);
+  gl.clearColor(0.8, 0.8, 0.8, 1.0);dd
   gl.enable(gl.DEPTH_TEST);
 
   // Making the shaders
@@ -44,7 +45,7 @@ function init() {
   // Making the mesh
   let width = 0.1;
   let height = 0.1;
-  let depth = 0.1;
+  let depth = 0.3;
   let cube = new cuboid(width, height, depth, gl, shaderProgram);
 
   let randomBoxesColor = [0, 1, 0, 1]; // Green
@@ -53,10 +54,10 @@ function init() {
   let playableBoxMaterial = new MonochromeMaterial(gl, shaderProgram, playableBoxColor);
   playableBox = new GraphicsNode(gl, cube, playableBoxMaterial, playableBoxMatrix);
 
-  for (let i = 0; i < 10; i++) {
-    let x = Math.random() - 0.5;
-    let y = Math.random() - 0.5;
-    let z = -Math.random()*5;
+  for (let i = 0; i < 30; i++) {
+    let x = Math.random() * 5 -2.5;
+    let y = Math.random() * 5 -2.5;
+    let z = -Math.random()*10 + 2;
     let mat = move([x, y, z]);
     let randomBox = new GraphicsNode(gl, cube, randomBoxesMaterial, mat);
     boxes.push(randomBox);
@@ -84,17 +85,17 @@ function lightning(GraphicsNode, color) {
 
 window.addEventListener('keydown', function(event) {
     if (event.key == 'w') {
-        playableBoxMatrix[1][3] += 0.1;  
+        playableBoxMatrix[1][3] += 0.03;  
     } if (event.key == 's') {
-        playableBoxMatrix[1][3] -= 0.1;  
+        playableBoxMatrix[1][3] -= 0.03;  
     } if (event.key == 'a') {
-        playableBoxMatrix[0][3] -= 0.1;  
+        playableBoxMatrix[0][3] -= 0.03;  
     } if (event.key == 'd') {
-        playableBoxMatrix[0][3] += 0.1;  
+        playableBoxMatrix[0][3] += 0.03;  
     } if (event.key == 'e') {
-        playableBoxMatrix[2][3] += 0.1;  
+        playableBoxMatrix[2][3] += 0.03;  
     } if (event.key == 'c') {
-        playableBoxMatrix[2][3] -= 0.1;  
+        playableBoxMatrix[2][3] -= 0.03;  
     }
     
     playableBox.update(playableBoxMatrix);
