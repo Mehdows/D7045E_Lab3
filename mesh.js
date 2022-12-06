@@ -22,6 +22,7 @@ class Mesh {
         this.vertices = vertices;
         this.indices = indices;
 
+        // Create a vertex array object
         let vertexArr = gl.createVertexArray();
         let vertexBuff = gl.createBuffer();
         let indexBuff = gl.createBuffer();
@@ -30,6 +31,7 @@ class Mesh {
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuff);
         gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuff);
 
+        
         let verticeArray = new Float32Array(this.vertices);
         let indiceArray = new Uint8Array(this.indices);
 
@@ -68,6 +70,7 @@ cuboid should be at the origin in the local coordinate system.
 
 class cuboid extends Mesh{
     constructor(width, height, depth, gl, shaderProgram){
+
         let vertices = [
             -width, -height, depth, 1,
             -width, height, depth, 1,
@@ -78,6 +81,7 @@ class cuboid extends Mesh{
             width, height, -depth, 1,
             width, -height, -depth, 1
         ];
+        
         let indices = [
             1, 0, 3,
             3, 2, 1,

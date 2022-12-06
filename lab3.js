@@ -31,7 +31,7 @@ function init() {
   let canvas = document.getElementById("gl-canvas");
   gl = canvas.getContext("webgl2");
   gl.viewport(0, 0, canvas.width, canvas.height);
-  gl.clearColor(0.8, 0.8, 0.8, 1.0);dd
+  gl.clearColor(0.8, 0.8, 0.8, 1.0);
   gl.enable(gl.DEPTH_TEST);
 
   // Making the shaders
