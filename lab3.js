@@ -4,17 +4,15 @@ var gl;
 var shaderProgram;
 var boxes = [];
 var camera;
-let playableBoxMatrix = mat4(vec4(1,0,0,0), vec4(0,1,0,0), vec4(0,0,1,-3), vec4(0,0,0,1));
 
 var vertexShaderSource =
 "attribute vec4 a_Position;\n" +
 "uniform mat4 u_TransformMatrix;\n" +
-"uniform mat4 u_ViewMatrix;\n" +
-"uniform mat4 u_ProjectionMatrix;\n" +
+"uniform mat4 u_CameraMatrix;\n" +
 "varying float v_Depth;\n" +
 "void main()\n" +
 "{\n" +
-"  gl_Position = u_ProjectionMatrix * u_ViewMatrix * u_TransformMatrix * a_Position;\n" +
+"  gl_Position = u_CameraMatrix * u_TransformMatrix * a_Position;\n" +
 "  v_Depth = sqrt( pow( gl_Position.x , 2.0) + pow( gl_Position.y , 2.0) + pow(gl_Position.z , 2.0));\n" +
 "}\n";
 
@@ -52,6 +50,7 @@ function init() {
   let playableBoxColor = [1, 0, 1, 1]; // Red
   let randomBoxesMaterial = new MonochromeMaterial(gl, shaderProgram, randomBoxesColor);
   let playableBoxMaterial = new MonochromeMaterial(gl, shaderProgram, playableBoxColor);
+  let playableBoxMatrix = mat4([1,0,0,0],[0,1,0,0],[0,0,1,-3],[0,0,0,1]);
   playableBox = new GraphicsNode(gl, cube, playableBoxMaterial, playableBoxMatrix);
 
   for (let i = 0; i < 50; i++) {
@@ -79,21 +78,22 @@ function render() {
 
 
 window.addEventListener('keydown', function(event) {
+    let moveVector = mat4([1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]);
     if (event.key == 'w') {
-        playableBoxMatrix[1][3] += 0.03;  
+      moveVector[1][3] += 0.03;  
     } if (event.key == 's') {
-        playableBoxMatrix[1][3] -= 0.03;  
+      moveVector[1][3] -= 0.03;  
     } if (event.key == 'a') {
-        playableBoxMatrix[0][3] -= 0.03;  
+      moveVector[0][3] -= 0.03;  
     } if (event.key == 'd') {
-        playableBoxMatrix[0][3] += 0.03;  
+      moveVector[0][3] += 0.03;  
     } if (event.key == 'e') {
-        playableBoxMatrix[2][3] += 0.03;  
+      moveVector[2][3] += 0.03;  
     } if (event.key == 'c') {
-        playableBoxMatrix[2][3] -= 0.03;  
+      moveVector[2][3] -= 0.03;  
     }
     
-    playableBox.update(playableBoxMatrix);
+    playableBox.update(moveVector);
     render();
 });
 
