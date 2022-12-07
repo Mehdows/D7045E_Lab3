@@ -1,3 +1,5 @@
+// Andreas Form och Marcus Asplund
+
 var gl;
 var shaderProgram;
 var boxes = [];
@@ -16,7 +18,6 @@ var vertexShaderSource =
 "  v_Depth = sqrt( pow( gl_Position.x , 2.0) + pow( gl_Position.y , 2.0) + pow(gl_Position.z , 2.0));\n" +
 "}\n";
 
-
 var  fragmentShaderSource = 
 "precision mediump float;\n" +
 "uniform vec4 u_Color;\n" +
@@ -25,13 +26,12 @@ var  fragmentShaderSource =
     "gl_FragColor = vec4(u_Color[0]*1.5/v_Depth, u_Color[1]*1.5/v_Depth, u_Color[2]*1.5/v_Depth, 1);\n" +
 "}\n";
 
-
 function init() {
   // Making the canvas
   let canvas = document.getElementById("gl-canvas");
   gl = canvas.getContext("webgl2");
   gl.viewport(0, 0, canvas.width, canvas.height);
-  gl.clearColor(0.8, 0.8, 0.8, 1.0);
+  gl.clearColor(0.9, 0.9, 0.9, 1.0);
   gl.enable(gl.DEPTH_TEST);
 
   // Making the shaders
@@ -49,12 +49,12 @@ function init() {
   let cube = new cuboid(width, height, depth, gl, shaderProgram);
 
   let randomBoxesColor = [0, 1, 0, 1]; // Green
-  let playableBoxColor = [1, 0, 0, 1]; // Red
+  let playableBoxColor = [1, 0, 1, 1]; // Red
   let randomBoxesMaterial = new MonochromeMaterial(gl, shaderProgram, randomBoxesColor);
   let playableBoxMaterial = new MonochromeMaterial(gl, shaderProgram, playableBoxColor);
   playableBox = new GraphicsNode(gl, cube, playableBoxMaterial, playableBoxMatrix);
 
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 50; i++) {
     let x = Math.random() * 5 -2.5;
     let y = Math.random() * 5 -2.5;
     let z = -Math.random()*10 + 2;
@@ -62,7 +62,6 @@ function init() {
     let randomBox = new GraphicsNode(gl, cube, randomBoxesMaterial, mat);
     boxes.push(randomBox);
   }
-  
   render();
 }
 
@@ -76,10 +75,6 @@ function render() {
     box.draw();
   }
   playableBox.draw();
-}
-
-function lightning(GraphicsNode, color) {
-
 }
 
 

@@ -1,3 +1,5 @@
+// Andreas Form och Marcus Asplund
+
 class ShaderProgram{
     
     constructor(gl, fragmentShader, vertexShader){

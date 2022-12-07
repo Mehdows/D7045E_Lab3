@@ -1,4 +1,8 @@
+// Andreas Form och Marcus Asplund
+
+
 class GraphicsNode {
+
     constructor(gl, mesh, material, transform) {
         this.gl = gl;
         this.mesh = mesh;

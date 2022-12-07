@@ -1,19 +1,4 @@
-/* 
-
-●  Implement a class Mesh for meshes intended to be used when defining surfaces of 
-graphical objects. 
-
-●  Apart from a graphics context, the constructor should take arrays with vertex and 
-index data describing the mesh, and create (via WebGL/OpenGL calls) 
-
-○  a Vertex Array Object handle,  
-○  a Vertex Buffer handle, and  
-○  an Element Array Buffer handle (index buffer).  
-
-●  It also sets up vertex attribute pointers accordingly. 
-
-*/
-
+// Andreas Form och Marcus Asplund
 
 class Mesh {
 
@@ -31,7 +16,6 @@ class Mesh {
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuff);
         gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuff);
 
-        
         let verticeArray = new Float32Array(this.vertices);
         let indiceArray = new Uint8Array(this.indices);
 
@@ -52,21 +36,7 @@ class Mesh {
     getVertices(){
         return this.vertices;
     }
-    
-
 }
-
-
-/* 
-
-●  Implement a class Cuboid that extends Mesh and represents a cuboid. 
-
-●  When a cuboid is created, it is only needed to give width, depth, and height, that is 
-the total extensions in the x, y, and z directions respectively. The midpoint of the 
-cuboid should be at the origin in the local coordinate system.  
-
-*/
-
 
 class cuboid extends Mesh{
     constructor(width, height, depth, gl, shaderProgram){
@@ -81,7 +51,7 @@ class cuboid extends Mesh{
             width, height, -depth, 1,
             width, -height, -depth, 1
         ];
-        
+
         let indices = [
             1, 0, 3,
             3, 2, 1,
@@ -105,6 +75,7 @@ class cuboid extends Mesh{
         this.gl = gl;
         this.shaderProgram = shaderProgram;
     }
+
     // Getters
     getCordinates(){
         let x = -this.width/2;
@@ -125,5 +96,4 @@ class cuboid extends Mesh{
     getDepth(){
         return this.depth
     }
-
 }

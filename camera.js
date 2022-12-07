@@ -1,3 +1,5 @@
+// Andreas Form och Marcus Asplund
+
 class Camera {
     constructor(gl, shaderProgram, canvas) {
         this.gl = gl;
