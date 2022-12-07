@@ -198,12 +198,49 @@ function flatten( v )
     return floats;
 }
 
-function multMatrix(mat1, mat2){
-    let result = new Float32Array(16);
-    for(let i = 0; i < 16; i++){
-        for(let j = 0; j < 4; j++){
-            result[i] += mat1[Math.floor(i/4)*4+j] * mat2[j*4+i%4];
+
+function mult( u, v )
+{
+    var result = [];
+
+    if ( u.matrix && v.matrix ) {
+        if ( u.length != v.length ) {
+            throw "mult(): trying to add matrices of different dimensions";
         }
+
+        for ( var i = 0; i < u.length; ++i ) {
+            if ( u[i].length != v[i].length ) {
+                throw "mult(): trying to add matrices of different dimensions";
+            }
+        }
+
+        for ( var i = 0; i < u.length; ++i ) {
+            result.push( [] );
+
+            for ( var j = 0; j < v.length; ++j ) {
+                var sum = 0.0;
+                for ( var k = 0; k < u.length; ++k ) {
+                    sum += u[i][k] * v[k][j];
+                }
+                result[i].push( sum );
+            }
+        }
+
+        result.matrix = true;
+
+        return result;
     }
-    return result;
+    else {
+        if ( u.length != v.length ) {
+            throw "mult(): vectors are not the same dimension";
+        }
+
+        for ( var i = 0; i < u.length; ++i ) {
+            result.push( u[i] * v[i] );
+        }
+
+        return result;
+    }
 }
+
+
